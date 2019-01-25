@@ -1,6 +1,6 @@
 .layout{
     margin:0 auto;
-    width:400px;
+    width:600px;
 }
 
 @media (min-width:700px){
@@ -87,13 +87,14 @@ main .detail{
     color:#fff;
 }
 main .detail .tag{
-    width:9vh;
-    padding:.5vh;
+    padding:.4em .8em;
     background-color: #2E6EEC;
-
-    text-align: center;
+    /* text-align: center; */
+    display:inline;
+    font-size: 2vh;
 }
 main .detail>h1 {
+    margin-top: 2vh;
     font-size: 5vh;
 }
 main .detail .icons{
@@ -124,7 +125,8 @@ main .area-bar .bar{
 main .area-bar .progress-bar{
     position: absolute;
     height: .8vh;
-    width: 10%;
+    width: 0%;
+    /* 让时间轴滑动更流畅 */
     transition: width .8s;
     background-color: #fff;
     border-radius: .2vh;
