@@ -76,6 +76,7 @@ var Footer = {
         })
 
     },
+    //获取channel数据
     render: function(){
         var _this = this
         $.getJSON('//jirenguapi.applinzi.com/fm/getChannels.php')
@@ -87,6 +88,7 @@ var Footer = {
             console.log('error')
         })
     },
+    //添加footer内容
     renderFooter: function(channels){
         var _this = this
         var html =''
@@ -160,7 +162,14 @@ var FM ={
         this.audio.addEventListener('pause',function(){
             clearInterval(_this.update)
         })
+
+        this.$container.find('.area-bar .bar').on('click',function(e){
+            console.log(e)
+            var percent =e.offsetX/ $(this).width()
+            _this.audio.currentTime = percent * _this.audio.duration
+        })
     },
+    //实时更新进度条，时间，歌词
     updateState: function(){
         var min = Math.floor(this.audio.currentTime/60)
         var second = Math.floor(this.audio.currentTime%60)+''
@@ -173,9 +182,10 @@ var FM ={
 
         var lyric = this.lyricObj['0'+min+':'+second]
         if(lyric){
-            this.$container.find('.lyric p').text(lyric)
+            this.$container.find('.lyric p').text(lyric).lyricAnimate('rollIn')
         }
     },
+    //获取歌曲数据
     loadSong: function(){
         var _this = this
         if(this.channelId===0){
@@ -191,6 +201,7 @@ var FM ={
     loadCollection: function(){
 
     },
+    //更改歌曲相关信息
     play: function(song){
         console.log(song)
         this.$song = song
@@ -200,9 +211,10 @@ var FM ={
         this.$container.find('.detail .auther').text(song.artist)
         this.$container.find('.aside figure').css('background-image', 'url('+song.picture+')')
         this.$container.find('.detail .tag').text(this.channelName)
-
+        $('.bg').css('background-image','url('+song.picture+')')
         this.getLyrics(song.sid)
     },
+    //获取歌词
     getLyrics : function(sid){
         var _this =this
         $.getJSON('//jirenguapi.applinzi.com/fm/getLyric.php',{sid:sid})
@@ -223,16 +235,27 @@ var FM ={
         })
     },
 }
+// 设置歌词动画
+$.fn.lyricAnimate = function(type){
+    type = type||'rollIn'
+    this.html(function(){
+        var arr = $(this).text()
+        .split('').map(function(word){
+            return '<span class="lyricAnimate">'+word+'</span>'
+        })
+        return arr.join('')
+    })
 
-// $.fn.boomText = function(type){
-//     type = type|| 'rollIn'
-//     this.html(function(){
-//         var arr = $(this).text()
-//         .split('').split('').map(function(word){
-//             return '<>'
-//         })
-//     })
-// }
+    var index = 0
+    var $lyricText = $(this).find('span')
+    var clock = setInterval(function(){
+        $lyricText.eq(index).addClass('animated '+type)
+        index++
+        if(index >= $lyricText.length){
+            clearInterval(clock)
+        }
+    },300)
+}
 FM.init()
 Footer.init()
 

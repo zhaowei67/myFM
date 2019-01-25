@@ -114,6 +114,7 @@ main .area-bar {
     margin-top:10vh;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 main .area-bar .bar{
     position: relative;
@@ -212,6 +213,11 @@ footer .layout .icon-left {
 }
 footer .layout .icon-right{
     right:-6vh;
+}
+
+.lyricAnimate {
+    display: inline-block;
+    opacity:0;
 }
 
 
